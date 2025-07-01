@@ -10,14 +10,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout repo
         uses: actions/checkout@v3
-
-      - name: Show repo files (debug)
-        run: ls -la
-
-      - name: Show Dockerfile content (debug)
-        run: cat Dockerfile
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
@@ -29,6 +23,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: Dockerfile
+          file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/devops-app:latest
