@@ -10,27 +10,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
 
-      - name: Mostrar archivos en raíz del repositorio
-        run: ls -la ${{ github.workspace }}
+      - name: Show repo files (debug)
+        run: ls -la
 
-      - name: Mostrar contenido del Dockerfile
-        run: cat ${{ github.workspace }}/Dockerfile
+      - name: Show Dockerfile content (debug)
+        run: cat Dockerfile
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: ${{ github.workspace }}
-          file: ${{ github.workspace }}/Dockerfile
+          context: .
+          file: ./Dockerfile
           push: true
-          tags: charles2410/devops-app:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/devops-app:latest
