@@ -12,12 +12,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-      - name: Mostrar archivos (debug)
-        run: ls -la
+      - name: Mostrar archivos en raíz del repositorio
+        run: ls -la ${{ github.workspace }}
 
-      - name: Verificar contenido de Dockerfile
-        run: cat Dockerfile
+      - name: Mostrar contenido del Dockerfile
+        run: cat ${{ github.workspace }}/Dockerfile
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
@@ -28,7 +30,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: ./
-          file: ./Dockerfile
+          context: ${{ github.workspace }}
+          file: ${{ github.workspace }}/Dockerfile
           push: true
           tags: charles2410/devops-app:latest
